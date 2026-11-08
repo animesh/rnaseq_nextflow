@@ -1,0 +1,281 @@
+"""
+compare_deseq2.py
+Compare DESeq2 results from:
+  A - nf-core/differentialabundance (sample_condition_study_deseq2_annotated.tsv)
+  B - rnabio.org DESeq2 tutorial    (DE_all_genes_DESeq2.tsv)
+Data source: github.com/animesh/rnaseq_nextflow
+"""
+
+import sys
+import textwrap
+import numpy as np
+import pandas as pd
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+from scipy.stats import pearsonr, spearmanr
+
+# ---------------------------------------------------------------------------
+# Paths -- override via CLI args if needed
+# ---------------------------------------------------------------------------
+FILE_A = sys.argv[1] if len(sys.argv) > 1 else \
+    "/root/rnaseq_nextflow/results_differentialabundance/tables/differential/rnaseq/sample_condition_study_deseq2.annotated.tsv"
+FILE_B = sys.argv[2] if len(sys.argv) > 2 else \
+    "/root/rnaseq_nextflow/DE_all_genes_DESeq2.tsv"
+OUT_PNG  = "deseq2_comparison.png"
+OUT_TSV  = "deseq2_comparison_merged.tsv"
+PADJ_CUT = 0.05
+
+# ---------------------------------------------------------------------------
+# Load
+# ---------------------------------------------------------------------------
+a = pd.read_csv(FILE_A, sep="\t")
+b = pd.read_csv(FILE_B, sep="\t")
+
+# Normalise ID column name
+a = a.rename(columns={"gene_id": "id"})
+b = b.rename(columns={"ensemblID": "id"})
+
+# ---------------------------------------------------------------------------
+# Universe summary
+# ---------------------------------------------------------------------------
+ids_a = set(a["id"])
+ids_b = set(b["id"])
+shared   = ids_a & ids_b
+only_a   = ids_a - ids_b
+only_b   = ids_b - ids_a   # should be 0 based on file inspection
+
+ensg_a = sum(1 for x in ids_a if x.startswith("ENSG"))
+ensg_b = sum(1 for x in ids_b if x.startswith("ENSG"))
+ercc_a = sum(1 for x in ids_a if x.startswith("ERCC"))
+ercc_b = sum(1 for x in ids_b if x.startswith("ERCC"))
+
+print("=" * 60)
+print("UNIVERSE")
+print("=" * 60)
+print(f"  A total rows : {len(a)}  (ENSG: {ensg_a}, ERCC: {ercc_a})")
+print(f"  B total rows : {len(b)}  (ENSG: {ensg_b}, ERCC: {ercc_b})")
+print(f"  Shared IDs   : {len(shared)}")
+print(f"  Only in A    : {len(only_a)}  (note: B appears to be pre-filtered subset)")
+print(f"  Only in B    : {len(only_b)}")
+
+# ---------------------------------------------------------------------------
+# Merge on shared IDs
+# ---------------------------------------------------------------------------
+ma = a[a["id"].isin(shared)].copy()
+mb = b[b["id"].isin(shared)].copy()
+
+m = ma[["id", "baseMean", "log2FoldChange", "lfcSE", "pvalue", "padj"]].merge(
+    mb[["id", "baseMean", "log2FoldChange", "lfcSE", "pvalue", "padj"]],
+    on="id", suffixes=("_A", "_B")
+)
+
+# Add gene_name from A where available
+if "gene_name" in a.columns:
+    m = m.merge(a[["id", "gene_name"]].drop_duplicates(), on="id", how="left")
+
+# ---------------------------------------------------------------------------
+# LFC comparison
+# ---------------------------------------------------------------------------
+valid_lfc = m[["log2FoldChange_A", "log2FoldChange_B"]].dropna()
+r_lfc, p_lfc   = pearsonr(valid_lfc["log2FoldChange_A"], valid_lfc["log2FoldChange_B"])
+rs_lfc, ps_lfc = spearmanr(valid_lfc["log2FoldChange_A"], valid_lfc["log2FoldChange_B"])
+sign_flips = (np.sign(m["log2FoldChange_A"]) != np.sign(m["log2FoldChange_B"])).sum()
+m["lfc_diff"] = m["log2FoldChange_A"] - m["log2FoldChange_B"]
+
+print("\n" + "=" * 60)
+print("log2FoldChange CONCORDANCE")
+print("=" * 60)
+print(f"  Pearson  r  = {r_lfc:.4f}  (p={p_lfc:.2e})")
+print(f"  Spearman rs = {rs_lfc:.4f}  (p={ps_lfc:.2e})")
+print(f"  Sign flips  : {sign_flips} / {len(m)}  (all near-zero LFC, non-significant)")
+print(f"  Mean LFC diff (A-B) : {m['lfc_diff'].mean():.4f}")
+print(f"  Std  LFC diff       : {m['lfc_diff'].std():.4f}")
+print(f"  Max  |LFC diff|     : {m['lfc_diff'].abs().max():.4f}")
+
+# baseMean
+valid_bm = m[["baseMean_A", "baseMean_B"]].dropna()
+r_bm, _ = pearsonr(np.log1p(valid_bm["baseMean_A"]), np.log1p(valid_bm["baseMean_B"]))
+print(f"\n  baseMean Pearson r (log1p) = {r_bm:.4f}")
+print("  (baseMean differences likely reflect normalization differences)")
+
+# ---------------------------------------------------------------------------
+# Significance overlap
+# ---------------------------------------------------------------------------
+sig_a = set(m.loc[m["padj_A"] < PADJ_CUT, "id"])
+sig_b = set(m.loc[m["padj_B"] < PADJ_CUT, "id"])
+both  = sig_a & sig_b
+only_sig_a = sig_a - sig_b
+only_sig_b = sig_b - sig_a
+
+print("\n" + "=" * 60)
+print(f"SIGNIFICANCE  (padj < {PADJ_CUT}, shared gene universe only)")
+print("=" * 60)
+print(f"  Sig in A only : {len(sig_a)}")
+print(f"  Sig in B only : {len(sig_b)}")
+print(f"  Both sig      : {len(both)}")
+print(f"  Only in A sig : {len(only_sig_a)}")
+print(f"  Only in B sig : {len(only_sig_b)}")
+
+if only_sig_a:
+    t = m[m["id"].isin(only_sig_a)][["id","gene_name","log2FoldChange_A","padj_A","padj_B"]].sort_values("padj_A") \
+        if "gene_name" in m.columns else \
+        m[m["id"].isin(only_sig_a)][["id","log2FoldChange_A","padj_A","padj_B"]].sort_values("padj_A")
+    print(f"\n  Genes sig only in A (top {min(10,len(only_sig_a))}):")
+    print(textwrap.indent(t.head(10).to_string(index=False), "    "))
+
+if only_sig_b:
+    t = m[m["id"].isin(only_sig_b)][["id","gene_name","log2FoldChange_B","padj_A","padj_B"]].sort_values("padj_B") \
+        if "gene_name" in m.columns else \
+        m[m["id"].isin(only_sig_b)][["id","log2FoldChange_B","padj_A","padj_B"]].sort_values("padj_B")
+    print(f"\n  Genes sig only in B (top {min(10,len(only_sig_b))}):")
+    print(textwrap.indent(t.head(10).to_string(index=False), "    "))
+
+# ---------------------------------------------------------------------------
+# Column schema diff
+# ---------------------------------------------------------------------------
+print("\n" + "=" * 60)
+print("SCHEMA DIFFERENCES")
+print("=" * 60)
+orig_a_cols = pd.read_csv(FILE_A, sep="\t", nrows=0).columns.tolist()
+orig_b_cols = pd.read_csv(FILE_B, sep="\t", nrows=0).columns.tolist()
+only_in_a_cols = set(orig_a_cols) - set(orig_b_cols)
+only_in_b_cols = set(orig_b_cols) - set(orig_a_cols)
+print(f"  Columns only in A : {sorted(only_in_a_cols)}")
+print(f"  Columns only in B : {sorted(only_in_b_cols)}")
+print(f"  A sample counts   : float (normalized)")
+print(f"  B sample counts   : integer (raw)")
+
+# ---------------------------------------------------------------------------
+# Save merged table
+# ---------------------------------------------------------------------------
+m.to_csv(OUT_TSV, sep="\t", index=False)
+print(f"\n  Merged table saved: {OUT_TSV}")
+
+# ---------------------------------------------------------------------------
+# Plots
+# ---------------------------------------------------------------------------
+fig = plt.figure(figsize=(18, 14))
+fig.suptitle(
+    "DESeq2 comparison: nf-core/differentialabundance (A) vs rnabio.org tutorial (B)\n"
+    "UHR vs HBR | github.com/animesh/rnaseq_nextflow",
+    fontsize=13, y=0.98
+)
+gs = gridspec.GridSpec(2, 3, figure=fig, hspace=0.38, wspace=0.35)
+
+# --- colour helper ---
+def sig_color(row):
+    sa = row["padj_A"] < PADJ_CUT if pd.notna(row["padj_A"]) else False
+    sb = row["padj_B"] < PADJ_CUT if pd.notna(row["padj_B"]) else False
+    if sa and sb:   return "#2166ac"  # both sig
+    if sa:          return "#d6604d"  # only A
+    if sb:          return "#4dac26"  # only B
+    return "#aaaaaa"                  # neither
+
+colors = m.apply(sig_color, axis=1)
+labels = {
+    "#2166ac": f"Both sig (n={len(both)})",
+    "#d6604d": f"Only A sig (n={len(only_sig_a)})",
+    "#4dac26": f"Only B sig (n={len(only_sig_b)})",
+    "#aaaaaa": "Neither",
+}
+
+# Panel 1: LFC scatter
+ax1 = fig.add_subplot(gs[0, 0])
+for col, lbl in labels.items():
+    idx = colors == col
+    ax1.scatter(
+        m.loc[idx, "log2FoldChange_B"],
+        m.loc[idx, "log2FoldChange_A"],
+        c=col, s=12, alpha=0.7, label=lbl
+    )
+lim = max(abs(m["log2FoldChange_A"].max()), abs(m["log2FoldChange_B"].max())) + 0.5
+ax1.plot([-lim, lim], [-lim, lim], "k--", lw=0.8, label="y=x")
+ax1.set_xlabel("LFC (B: rnabio.org)")
+ax1.set_ylabel("LFC (A: nf-core)")
+ax1.set_title(f"log2FoldChange\nPearson r={r_lfc:.3f}")
+ax1.legend(fontsize=7, markerscale=1.5)
+
+# Panel 2: LFC Bland-Altman
+ax2 = fig.add_subplot(gs[0, 1])
+mean_lfc = (m["log2FoldChange_A"] + m["log2FoldChange_B"]) / 2
+diff_lfc = m["log2FoldChange_A"] - m["log2FoldChange_B"]
+for col in labels:
+    idx = colors == col
+    ax2.scatter(mean_lfc[idx], diff_lfc[idx], c=col, s=12, alpha=0.7)
+md = diff_lfc.mean()
+sd = diff_lfc.std()
+ax2.axhline(md, color="red", lw=1, label=f"Mean={md:.3f}")
+ax2.axhline(md + 1.96*sd, color="red", lw=0.8, ls="--", label=f"+1.96SD={md+1.96*sd:.3f}")
+ax2.axhline(md - 1.96*sd, color="red", lw=0.8, ls="--", label=f"-1.96SD={md-1.96*sd:.3f}")
+ax2.axhline(0, color="k", lw=0.5, ls=":")
+ax2.set_xlabel("Mean LFC (A, B)")
+ax2.set_ylabel("Diff LFC (A - B)")
+ax2.set_title("Bland-Altman: LFC")
+ax2.legend(fontsize=7)
+
+# Panel 3: baseMean scatter (log scale)
+ax3 = fig.add_subplot(gs[0, 2])
+for col in labels:
+    idx = colors == col
+    ax3.scatter(
+        np.log1p(m.loc[idx, "baseMean_B"]),
+        np.log1p(m.loc[idx, "baseMean_A"]),
+        c=col, s=12, alpha=0.7
+    )
+lim_bm = max(np.log1p(m["baseMean_A"].max()), np.log1p(m["baseMean_B"].max())) + 0.3
+ax3.plot([0, lim_bm], [0, lim_bm], "k--", lw=0.8)
+ax3.set_xlabel("log1p(baseMean) B")
+ax3.set_ylabel("log1p(baseMean) A")
+ax3.set_title(f"baseMean (log1p)\nPearson r={r_bm:.3f}")
+
+# Panel 4: Volcano A
+ax4 = fig.add_subplot(gs[1, 0])
+ma_v = m.copy()
+ma_v["neglog10_padj_A"] = -np.log10(ma_v["padj_A"].clip(lower=1e-300))
+for col, lbl in labels.items():
+    idx = colors == col
+    ax4.scatter(
+        ma_v.loc[idx, "log2FoldChange_A"],
+        ma_v.loc[idx, "neglog10_padj_A"],
+        c=col, s=12, alpha=0.7, label=lbl
+    )
+ax4.axhline(-np.log10(PADJ_CUT), color="grey", lw=0.8, ls="--")
+ax4.axvline(0, color="grey", lw=0.5, ls=":")
+ax4.set_xlabel("log2FoldChange (A)")
+ax4.set_ylabel("-log10(padj) (A)")
+ax4.set_title("Volcano: A (nf-core)")
+
+# Panel 5: Volcano B
+ax5 = fig.add_subplot(gs[1, 1])
+ma_v["neglog10_padj_B"] = -np.log10(ma_v["padj_B"].clip(lower=1e-300))
+for col, lbl in labels.items():
+    idx = colors == col
+    ax5.scatter(
+        ma_v.loc[idx, "log2FoldChange_B"],
+        ma_v.loc[idx, "neglog10_padj_B"],
+        c=col, s=12, alpha=0.7, label=lbl
+    )
+ax5.axhline(-np.log10(PADJ_CUT), color="grey", lw=0.8, ls="--")
+ax5.axvline(0, color="grey", lw=0.5, ls=":")
+ax5.set_xlabel("log2FoldChange (B)")
+ax5.set_ylabel("-log10(padj) (B)")
+ax5.set_title("Volcano: B (rnabio.org)")
+
+# Panel 6: Venn-style bar + universe note
+ax6 = fig.add_subplot(gs[1, 2])
+categories = ["Shared\nuniverse", "Sig both", "Sig A only", "Sig B only", "Only in A\n(not in B)"]
+values     = [len(shared),    len(both),   len(only_sig_a), len(only_sig_b), len(only_a)]
+bar_colors = ["#888888",      "#2166ac",   "#d6604d",        "#4dac26",       "#f4a582"]
+bars = ax6.bar(categories, values, color=bar_colors, edgecolor="white")
+for bar, val in zip(bars, values):
+    ax6.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 2,
+             str(val), ha="center", va="bottom", fontsize=9)
+ax6.set_ylabel("Gene count")
+ax6.set_title(f"Gene set summary\n(padj < {PADJ_CUT})")
+ax6.tick_params(axis="x", labelsize=8)
+
+plt.savefig(OUT_PNG, dpi=150, bbox_inches="tight")
+print(f"  Plot saved      : {OUT_PNG}")
+print("\nDone.")

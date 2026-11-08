@@ -1,31 +1,30 @@
-STAR version=2.7.10a
-STAR compilation time,server,dir=2022-01-14T18:50:00-05:00 :/home/dobin/data/STAR/STARcode/STAR.master/source
-STAR git: On branch master ; commit ae26add7ea1724f3281ec8abedb71bcff6a4ae73 ; diff files: CHANGES.md README.md RELEASEnotes.md doc/STARmanual.pdf extras/doc-latex/STARmanual.tex extras/doc-latex/convertParDefToLatexTable.awk extras/doc-latex/parametersDefault.tex extras/docker/Dockerfile source/VERSION 
+STAR version=2.7.11b
+STAR compilation time,server,dir=2025-01-09T12:32:06+0000 :/opt/conda/conda-bld/star_1736425784849/work/source
 ##### Command Line:
-STAR --genomeDir star --readFilesIn input1/UHRRep3_trimmed_1_val_1.fq.gz input2/UHRRep3_trimmed_2_val_2.fq.gz --runThreadN 6 --outFileNamePrefix UHRRep3. --sjdbGTFfile chr22_with_ERCC92.filtered.gtf --outSAMattrRGline ID:UHRRep3 SM:UHRRep3 --quantMode TranscriptomeSAM --twopassMode Basic --outSAMtype BAM Unsorted --readFilesCommand zcat --runRNGseed 0 --outFilterMultimapNmax 20 --alignSJDBoverhangMin 1 --outSAMattributes NH HI AS NM MD --quantTranscriptomeBan Singleend --outSAMstrandField intronMotif
+/opt/conda/bin/STAR-avx2 --genomeDir star --readFilesIn input1/UHRRep3_trimmed_1_val_1.fq.gz input2/UHRRep3_trimmed_2_val_2.fq.gz --runThreadN 12 --outFileNamePrefix UHRRep3. --sjdbGTFfile chr22_with_ERCC92.biotype.filtered.gtf --quantMode TranscriptomeSAM --outSAMtype BAM Unsorted --outSAMattributes NH HI AS NM MD --readFilesCommand zcat --twopassMode Basic --runRNGseed 0 --outFilterMultimapNmax 20 --alignSJDBoverhangMin 1 --outSAMstrandField intronMotif --quantTranscriptomeSAMoutput BanSingleEnd --outSAMattrRGline ID:UHRRep3 SM:UHRRep3
 ##### Initial USER parameters from Command Line:
 outFileNamePrefix                 UHRRep3.
 ###### All USER parameters from Command Line:
 genomeDir                     star     ~RE-DEFINED
 readFilesIn                   input1/UHRRep3_trimmed_1_val_1.fq.gz   input2/UHRRep3_trimmed_2_val_2.fq.gz        ~RE-DEFINED
-runThreadN                    6     ~RE-DEFINED
+runThreadN                    12     ~RE-DEFINED
 outFileNamePrefix             UHRRep3.     ~RE-DEFINED
-sjdbGTFfile                   chr22_with_ERCC92.filtered.gtf     ~RE-DEFINED
-outSAMattrRGline              ID:UHRRep3   SM:UHRRep3        ~RE-DEFINED
+sjdbGTFfile                   chr22_with_ERCC92.biotype.filtered.gtf     ~RE-DEFINED
 quantMode                     TranscriptomeSAM        ~RE-DEFINED
-twopassMode                   Basic     ~RE-DEFINED
 outSAMtype                    BAM   Unsorted        ~RE-DEFINED
+outSAMattributes              NH   HI   AS   NM   MD        ~RE-DEFINED
 readFilesCommand              zcat        ~RE-DEFINED
+twopassMode                   Basic     ~RE-DEFINED
 runRNGseed                    0     ~RE-DEFINED
 outFilterMultimapNmax         20     ~RE-DEFINED
 alignSJDBoverhangMin          1     ~RE-DEFINED
-outSAMattributes              NH   HI   AS   NM   MD        ~RE-DEFINED
-quantTranscriptomeBan         Singleend     ~RE-DEFINED
 outSAMstrandField             intronMotif     ~RE-DEFINED
+quantTranscriptomeSAMoutput   BanSingleEnd     ~RE-DEFINED
+outSAMattrRGline              ID:UHRRep3   SM:UHRRep3        ~RE-DEFINED
 ##### Finished reading parameters from all sources
 
 ##### Final user re-defined parameters-----------------:
-runThreadN                        6
+runThreadN                        12
 runRNGseed                        0
 genomeDir                         star
 readFilesIn                       input1/UHRRep3_trimmed_1_val_1.fq.gz   input2/UHRRep3_trimmed_2_val_2.fq.gz   
@@ -37,20 +36,20 @@ outSAMattributes                  NH   HI   AS   NM   MD
 outSAMattrRGline                  ID:UHRRep3   SM:UHRRep3   
 outFilterMultimapNmax             20
 alignSJDBoverhangMin              1
-sjdbGTFfile                       chr22_with_ERCC92.filtered.gtf
+sjdbGTFfile                       chr22_with_ERCC92.biotype.filtered.gtf
 quantMode                         TranscriptomeSAM   
-quantTranscriptomeBan             Singleend
+quantTranscriptomeSAMoutput       BanSingleEnd
 twopassMode                       Basic
 
 -------------------------------
 ##### Final effective command line:
-STAR   --runThreadN 6   --runRNGseed 0   --genomeDir star   --readFilesIn input1/UHRRep3_trimmed_1_val_1.fq.gz   input2/UHRRep3_trimmed_2_val_2.fq.gz      --readFilesCommand zcat      --outFileNamePrefix UHRRep3.   --outSAMtype BAM   Unsorted      --outSAMstrandField intronMotif   --outSAMattributes NH   HI   AS   NM   MD      --outSAMattrRGline ID:UHRRep3   SM:UHRRep3      --outFilterMultimapNmax 20   --alignSJDBoverhangMin 1   --sjdbGTFfile chr22_with_ERCC92.filtered.gtf   --quantMode TranscriptomeSAM      --quantTranscriptomeBan Singleend   --twopassMode Basic
+/opt/conda/bin/STAR-avx2   --runThreadN 12   --runRNGseed 0   --genomeDir star   --readFilesIn input1/UHRRep3_trimmed_1_val_1.fq.gz   input2/UHRRep3_trimmed_2_val_2.fq.gz      --readFilesCommand zcat      --outFileNamePrefix UHRRep3.   --outSAMtype BAM   Unsorted      --outSAMstrandField intronMotif   --outSAMattributes NH   HI   AS   NM   MD      --outSAMattrRGline ID:UHRRep3   SM:UHRRep3      --outFilterMultimapNmax 20   --alignSJDBoverhangMin 1   --sjdbGTFfile chr22_with_ERCC92.biotype.filtered.gtf   --quantMode TranscriptomeSAM      --quantTranscriptomeSAMoutput BanSingleEnd   --twopassMode Basic
 ----------------------------------------
 
 Number of fastq files for each mate = 1
 
    Input read files for mate 1 :
--rw-r--r--    1 1000     1000      11216238 Oct 17 11:52 input1/UHRRep3_trimmed_1_val_1.fq.gz
+-rw-r--r-- 1 root root 13226487 Nov  7 11:27 input1/UHRRep3_trimmed_1_val_1.fq.gz
 
    readsCommandsFile:
 exec > "UHRRep3._STARtmp/tmp.fifo.read1"
@@ -59,7 +58,7 @@ zcat      "input1/UHRRep3_trimmed_1_val_1.fq.gz"
 
 
    Input read files for mate 2 :
--rw-r--r--    1 1000     1000      11901757 Oct 17 11:52 input2/UHRRep3_trimmed_2_val_2.fq.gz
+-rw-r--r-- 1 root root 14162041 Nov  7 11:27 input2/UHRRep3_trimmed_2_val_2.fq.gz
 
    readsCommandsFile:
 exec > "UHRRep3._STARtmp/tmp.fifo.read2"
@@ -71,7 +70,7 @@ WARNING --outSAMstrandField=intronMotif, therefore STAR will output XS attribute
 ParametersSolo: --soloCellFilterType CellRanger2.2 filtering parameters:  3000 0.99 10
 Finished loading and checking parameters
 Reading genome generation parameters:
-### STAR   --runMode genomeGenerate      --runThreadN 6   --genomeDir star/   --genomeFastaFiles chr22_with_ERCC92.fa      --genomeSAindexNbases 12   --limitGenomeGenerateRAM 17079869184   --sjdbGTFfile chr22_with_ERCC92.filtered.gtf
+### /opt/conda/bin/STAR-avx2   --runMode genomeGenerate      --runThreadN 12   --genomeDir star/   --genomeFastaFiles chr22_with_ERCC92.fa      --genomeSAindexNbases 12   --limitGenomeGenerateRAM 17079869184   --sjdbGTFfile chr22_with_ERCC92.biotype.filtered.gtf
 ### GstrandBit=32
 versionGenome                 2.7.4a     ~RE-DEFINED
 genomeType                    Full     ~RE-DEFINED
@@ -83,7 +82,7 @@ genomeTransformType           None     ~RE-DEFINED
 genomeTransformVCF            -     ~RE-DEFINED
 sjdbOverhang                  100     ~RE-DEFINED
 sjdbFileChrStartEnd           -        ~RE-DEFINED
-sjdbGTFfile                   chr22_with_ERCC92.filtered.gtf     ~RE-DEFINED
+sjdbGTFfile                   chr22_with_ERCC92.biotype.filtered.gtf     ~RE-DEFINED
 sjdbGTFchrPrefix              -     ~RE-DEFINED
 sjdbGTFfeatureExon            exon     ~RE-DEFINED
 sjdbGTFtagExonParentTranscripttranscript_id     ~RE-DEFINED
@@ -186,7 +185,7 @@ Number of real (reference) chromosomes= 93
 92	ERCC-00170	1023	74448896
 93	ERCC-00171	505	74711040
 --sjdbOverhang = 100 taken from the generated genome
-Started loading the genome: Thu Oct 17 11:54:14 2024
+Started loading the genome: Sat Nov  7 11:29:05 2026
 
 Genome: size given as a parameter = 76508020
 SA: size given as a parameter = 336350292
@@ -200,29 +199,29 @@ Loading Genome ... done! state: good=1 eof=0 fail=0 bad=0; loaded 76508020 bytes
 SA file size: 336350292 bytes; state: good=1 eof=0 fail=0 bad=0
 Loading SA ... done! state: good=1 eof=0 fail=0 bad=0; loaded 336350292 bytes
 Loading SAindex ... done: 97867203 bytes
-Finished loading the genome: Thu Oct 17 11:54:15 2024
+Finished loading the genome: Sat Nov  7 11:29:05 2026
 
 Processing splice junctions database sjdbN=7636,   pGe.sjdbOverhang=100 
 alignIntronMax=alignMatesGapMax=0, the max intron size will be approximately determined by (2^winBinNbits)*winAnchorDistNbins=589824
-Oct 17 11:54:15   Loaded database junctions from the generated genome star//sjdbList.out.tab: 7636 total junctions
+Nov 07 11:29:05   Loaded database junctions from the generated genome star//sjdbList.out.tab: 7636 total junctions
 
-Oct 17 11:54:15 ..... processing annotations GTF
-Processing pGe.sjdbGTFfile=chr22_with_ERCC92.filtered.gtf, found:
+Nov 07 11:29:05 ..... processing annotations GTF
+Processing pGe.sjdbGTFfile=chr22_with_ERCC92.biotype.filtered.gtf, found:
 		4564 transcripts
 		26155 exons (non-collapsed)
 		7640 collapsed junctions
 Total junctions: 15276
-Oct 17 11:54:15 ..... finished GTF processing
+Nov 07 11:29:05 ..... finished GTF processing
 
-Oct 17 11:54:15   Finished preparing junctions
-Oct 17 11:54:15 ..... inserting junctions into the genome indices
-Oct 17 11:54:15   Finished SA search: number of new junctions=0, old junctions=7636
-Oct 17 11:54:15   Finished sorting SA indicesL nInd=0
+Nov 07 11:29:05   Finished preparing junctions
+Nov 07 11:29:05 ..... inserting junctions into the genome indices
+Nov 07 11:29:05   Finished SA search: number of new junctions=0, old junctions=7636
+Nov 07 11:29:05   Finished sorting SA indicesL nInd=0
 Genome size with junctions=76508020  74973184   1534836
 GstrandBit1=32   GstrandBit=32
-Oct 17 11:54:16   Finished inserting junction indices
-Oct 17 11:54:17   Finished SAi
-Oct 17 11:54:17 ..... finished inserting junctions into genome
+Nov 07 11:29:07   Finished inserting junction indices
+Nov 07 11:29:07   Finished SAi
+Nov 07 11:29:07 ..... finished inserting junctions into genome
 Created thread # 1
 Starting to map file # 0
 mate 1:   input1/UHRRep3_trimmed_1_val_1.fq.gz
@@ -231,9 +230,21 @@ Created thread # 2
 Created thread # 3
 Created thread # 4
 Created thread # 5
+Created thread # 6
+Created thread # 7
+Created thread # 8
+Created thread # 9
+Created thread # 10
+Created thread # 11
 Thread #4 end of input stream, nextChar=-1
-Completed: thread #0
 Completed: thread #5
+Completed: thread #6
+Completed: thread #7
+Completed: thread #8
+Completed: thread #9
+Completed: thread #11
+Completed: thread #0
+Completed: thread #10
 Completed: thread #4
 Completed: thread #3
 Completed: thread #2
@@ -243,20 +254,26 @@ Joined thread # 2
 Joined thread # 3
 Joined thread # 4
 Joined thread # 5
-Oct 17 11:54:23   Loaded database junctions from the 1st pass file: UHRRep3._STARpass1//SJ.out.tab: 18888 total junctions
+Joined thread # 6
+Joined thread # 7
+Joined thread # 8
+Joined thread # 9
+Joined thread # 10
+Joined thread # 11
+Nov 07 11:29:13   Loaded database junctions from the 1st pass file: UHRRep3._STARpass1//SJ.out.tab: 18888 total junctions
 
-Oct 17 11:54:23   Finished preparing junctions
-Oct 17 11:54:23 ..... inserting junctions into the genome indices
-Oct 17 11:54:23   Finished SA search: number of new junctions=266, old junctions=7636
-Oct 17 11:54:23   Finished sorting SA indicesL nInd=106400
+Nov 07 11:29:13   Finished preparing junctions
+Nov 07 11:29:13 ..... inserting junctions into the genome indices
+Nov 07 11:29:13   Finished SA search: number of new junctions=266, old junctions=7636
+Nov 07 11:29:13   Finished sorting SA indicesL nInd=106400
 Genome size with junctions=76561486  74973184   1588302
 GstrandBit1=32   GstrandBit=32
-Oct 17 11:54:25   Finished inserting junction indices
-Oct 17 11:54:25   Finished SAi
-Oct 17 11:54:25 ..... finished inserting junctions into genome
+Nov 07 11:29:15   Finished inserting junction indices
+Nov 07 11:29:15   Finished SAi
+Nov 07 11:29:15 ..... finished inserting junctions into genome
 
    Input read files for mate 1 :
--rw-r--r--    1 1000     1000      11216238 Oct 17 11:52 input1/UHRRep3_trimmed_1_val_1.fq.gz
+-rw-r--r-- 1 root root 13226487 Nov  7 11:27 input1/UHRRep3_trimmed_1_val_1.fq.gz
 
    readsCommandsFile:
 exec > "UHRRep3._STARtmp/tmp.fifo.read1"
@@ -265,7 +282,7 @@ zcat      "input1/UHRRep3_trimmed_1_val_1.fq.gz"
 
 
    Input read files for mate 2 :
--rw-r--r--    1 1000     1000      11901757 Oct 17 11:52 input2/UHRRep3_trimmed_2_val_2.fq.gz
+-rw-r--r-- 1 root root 14162041 Nov  7 11:27 input2/UHRRep3_trimmed_2_val_2.fq.gz
 
    readsCommandsFile:
 exec > "UHRRep3._STARtmp/tmp.fifo.read2"
@@ -275,16 +292,28 @@ zcat      "input2/UHRRep3_trimmed_2_val_2.fq.gz"
 Loaded transcript database, nTr=4564
 Loaded exon database, nEx=26155
 Created thread # 1
+Created thread # 2
 Starting to map file # 0
 mate 1:   input1/UHRRep3_trimmed_1_val_1.fq.gz
 mate 2:   input2/UHRRep3_trimmed_2_val_2.fq.gz
-Created thread # 2
 Created thread # 3
 Created thread # 4
 Created thread # 5
+Created thread # 6
+Created thread # 7
+Created thread # 8
+Created thread # 9
+Created thread # 10
+Created thread # 11
 Thread #4 end of input stream, nextChar=-1
-Completed: thread #0
 Completed: thread #5
+Completed: thread #6
+Completed: thread #7
+Completed: thread #8
+Completed: thread #9
+Completed: thread #10
+Completed: thread #11
+Completed: thread #0
 Completed: thread #4
 Completed: thread #3
 Completed: thread #2
@@ -294,4 +323,15 @@ Joined thread # 2
 Joined thread # 3
 Joined thread # 4
 Joined thread # 5
+Joined thread # 6
+Joined thread # 7
+Joined thread # 8
+Joined thread # 9
+Joined thread # 10
+Joined thread # 11
+Nov 07 11:29:33 ..... finished mapping
+RAM after mapping:
+VmPeak:	 9202332 kB; VmSize:	 9144996 kB; VmHWM:	 4001064 kB; VmRSS:	 4001064 kB; 
+RAM after freeing genome index memory:
+VmPeak:	 9202332 kB; VmSize:	 5014884 kB; VmHWM:	 4000588 kB; VmRSS:	 2844884 kB; 
 ALL DONE!

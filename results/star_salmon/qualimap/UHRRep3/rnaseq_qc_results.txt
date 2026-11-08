@@ -3,8 +3,8 @@ RNA-Seq QC report
 
 >>>>>>> Input
 
-    bam file = UHRRep3.markdup.sorted.bam
-    gff file = chr22_with_ERCC92.filtered.gtf
+    bam file = UHRRep3.namesorted.bam
+    gff file = chr22_with_ERCC92.biotype.filtered.gtf
     counting algorithm = uniquely-mapped-reads
     protocol = strand-specific-reverse
     5'-3' bias region size = 100

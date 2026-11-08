@@ -1,49 +1,75 @@
 {
-    "salmon_version": "1.10.1",
-    "samp_type": "none",
-    "opt_type": "vb",
-    "quant_errors": [],
-    "num_libraries": 1,
-    "library_types": [
-        "ISR"
-    ],
-    "frag_dist_length": 1001,
-    "frag_length_mean": 171.94832486930509,
-    "frag_length_sd": 52.17922579766036,
-    "seq_bias_correct": false,
-    "gc_bias_correct": false,
-    "num_bias_bins": 4096,
-    "mapping_type": "alignment",
-    "num_valid_targets": 4564,
-    "num_decoy_targets": 0,
-    "num_eq_classes": 4614,
-    "serialized_eq_classes": false,
-    "eq_class_properties": [
-        "range_factorized",
-        "gzipped"
-    ],
-    "length_classes": [
-        523,
-        662,
-        1077,
-        2273,
-        49287
-    ],
-    "index_seq_hash": "",
-    "index_name_hash": "",
-    "index_seq_hash512": "",
-    "index_name_hash512": "",
-    "index_decoy_seq_hash": "",
-    "index_decoy_name_hash": "",
-    "num_bootstraps": 0,
-    "num_processed": 104969,
-    "num_mapped": 104969,
-    "num_decoy_fragments": 0,
-    "num_dovetail_fragments": 0,
-    "num_fragments_filtered_vm": 0,
-    "num_alignments_below_threshold_for_mapped_fragments_vm": 0,
-    "percent_mapped": 100.0,
-    "call": "quant",
-    "start_time": "Thu Oct 17 11:55:11 2024",
-    "end_time": "Thu Oct 17 11:55:14 2024"
+  "salmon_version": "2.7.0",
+  "samp_type": "none",
+  "opt_type": "vb",
+  "quant_errors": [],
+  "num_libraries": 1,
+  "library_types": [
+    "ISR"
+  ],
+  "frag_dist_length": 1001,
+  "frag_length_mean": 172.77115472099533,
+  "frag_length_sd": 52.55146693022569,
+  "frag_length_source": "alignments",
+  "seq_bias_correct": false,
+  "gc_bias_correct": false,
+  "pos_bias_correct": false,
+  "num_bias_bins": 0,
+  "mapping_type": "alignment",
+  "index_seq_hash": "",
+  "index_name_hash": "",
+  "index_seq_hash512": "",
+  "index_name_hash512": "",
+  "index_decoy_seq_hash": "",
+  "index_decoy_name_hash": "",
+  "num_valid_targets": 4564,
+  "num_decoy_targets": 0,
+  "num_eq_classes": 3677,
+  "serialized_eq_classes": false,
+  "eq_class_properties": [
+    "range_factorized",
+    "gzipped"
+  ],
+  "length_classes": [
+    523,
+    662,
+    1077,
+    2273,
+    49287
+  ],
+  "num_processed": 104969,
+  "num_mapped": 104090,
+  "num_dovetail_fragments": 0,
+  "num_fragments_filtered_vm": 0,
+  "num_alignments_below_threshold_for_mapped_fragments_vm": 0,
+  "percent_mapped": 99.162609913403,
+  "num_decoy_fragments": 0,
+  "inference_truncated_mass": 0.0,
+  "num_bootstraps": 0,
+  "num_orphan": 0,
+  "range_factorization_bins": 4,
+  "meta_info_complete": false,
+  "incomplete_meta_info_fields": [
+    {
+      "field": "alignment_provenance",
+      "source": "bam",
+      "reason": "the source BAM's header carries no @PG records, so how its alignments were produced is not recorded anywhere in the file"
+    }
+  ],
+  "num_em_iterations": 233,
+  "em_converged": true,
+  "detected_library_type": "ISR",
+  "inference_path": "deterministic",
+  "total_time_seconds": 0.656023096,
+  "peak_rss_kb": 122972,
+  "diagnostics": [
+    {
+      "code": "bam_score_tags_unusable",
+      "severity": "warning",
+      "message": "no alignment in this BAM carries an AS tag (393230 records read): scoring falls back to equal weights for every placement of a fragment, so multireads are apportioned by effective length alone; pass --errorModel with -t <transcripts.fa> to score the alignments from their own bases instead"
+    }
+  ],
+  "call": "quant",
+  "start_time": "Sat Nov  7 11:31:26 2026",
+  "end_time": "Sat Nov  7 11:31:27 2026"
 }

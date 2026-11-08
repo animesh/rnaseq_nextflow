@@ -1,52 +1,38 @@
-
 SUMMARISING RUN PARAMETERS
-==========================
+=========================
 Input filename: UHRRep2_trimmed_2.fastq.gz
 Trimming mode: paired-end
-Trim Galore version: 0.6.7
-Cutadapt version: 3.4
-Python version: could not detect
-Number of cores used for trimming: 2
+Trim Galore version: 2.3.0
 Quality Phred score cutoff: 20
 Quality encoding type selected: ASCII+33
-Using Nextera adapter for trimming (count: 12). Second best hit was smallRNA (count: 9)
-Adapter sequence: 'CTGTCTCTTATA' (Nextera Transposase sequence; auto-detected)
-Maximum trimming error rate: 0.1 (default)
+Adapter sequence: 'CTGTCTCTTATA' (user-specified or auto-detected)
+Maximum trimming error rate: 0.1
 Minimum required adapter overlap (stringency): 1 bp
 Minimum required sequence length for both reads before a sequence pair gets removed: 20 bp
-Running FastQC on the data once trimming has completed
-Running FastQC with the following extra arguments: -t 6
 Output file will be GZIP compressed
 
 
-This is cutadapt 3.4 with Python 3.9.6
-Command line parameters: -j 2 -e 0.1 -q 20 -O 1 -a CTGTCTCTTATA UHRRep2_trimmed_2.fastq.gz
-Processing reads on 2 cores in single-end mode ...
-Finished in 1.77 s (11 µs/read; 5.51 M reads/minute).
+Trim Galore 2.3.0 — adapter trimming built in
+This is cutadapt 4.0 (compatible; for MultiQC backwards compatibility)
+Command line parameters: -j 1 -e 0.1 -q 20 -O 1 -a CTGTCTCTTATA UHRRep2_trimmed_2.fastq.gz
+Processing reads on 1 core in single-end mode ...
 
 === Summary ===
 
-Total reads processed:                 162,373
-Reads with adapters:                    54,844 (33.8%)
-Reads written (passing filters):       162,373 (100.0%)
+Total reads processed:              162,373
+Reads with adapters:                 54,844 (33.8%)
+Reads written (passing filters):    162,373 (100.0%)
 
-Total basepairs processed:    16,237,300 bp
-Quality-trimmed:                 299,086 bp (1.8%)
-Total written (filtered):     15,857,138 bp (97.7%)
+Total basepairs processed:     16,237,300 bp
+Quality-trimmed:                  299,086 bp (1.8%)
+Total written (filtered):      15,857,138 bp (97.7%)
 
 === Adapter 1 ===
 
-Sequence: CTGTCTCTTATA; Type: regular 3'; Length: 12; Trimmed: 54844 times
+Sequence: CTGTCTCTTATA; Type: regular 3'; Length: 12; Trimmed: 54844 times.
 
 No. of allowed errors:
 1-9 bp: 0; 10-12 bp: 1
-
-Bases preceding removed adapters:
-  A: 20.5%
-  C: 29.0%
-  G: 25.7%
-  T: 24.8%
-  none/other: 0.0%
 
 Overview of removed sequences
 length	count	expect	max.err	error counts
@@ -58,59 +44,72 @@ length	count	expect	max.err	error counts
 6	77	39.6	0	77
 7	27	9.9	0	27
 8	8	2.5	0	8
-9	2	0.6	0	0 2
-10	3	0.2	1	0 3
-11	3	0.0	1	0 3
-13	1	0.0	1	0 1
-14	1	0.0	1	0 1
-15	1	0.0	1	0 1
-16	1	0.0	1	0 1
-17	2	0.0	1	0 2
-19	2	0.0	1	0 2
-21	3	0.0	1	0 3
-23	1	0.0	1	0 1
-26	1	0.0	1	0 1
-28	1	0.0	1	0 1
-29	1	0.0	1	0 1
-33	1	0.0	1	0 1
-34	1	0.0	1	0 1
-36	1	0.0	1	0 1
-39	2	0.0	1	0 2
-41	1	0.0	1	0 1
-44	2	0.0	1	0 2
-45	1	0.0	1	0 1
-47	1	0.0	1	0 1
-48	1	0.0	1	0 1
-51	3	0.0	1	0 3
-52	3	0.0	1	0 3
-55	1	0.0	1	0 1
-57	1	0.0	1	0 1
-59	3	0.0	1	0 3
-61	1	0.0	1	0 1
-62	3	0.0	1	0 3
-64	2	0.0	1	0 2
-70	1	0.0	1	0 1
-71	1	0.0	1	0 1
-72	1	0.0	1	0 1
-73	4	0.0	1	0 4
-77	2	0.0	1	0 2
-78	2	0.0	1	0 2
-80	1	0.0	1	0 1
-81	1	0.0	1	0 1
-83	5	0.0	1	0 5
-84	1	0.0	1	0 1
-90	1	0.0	1	0 1
-91	2	0.0	1	0 2
-92	1	0.0	1	0 1
-95	1	0.0	1	0 1
-98	1	0.0	1	0 1
-99	2	0.0	1	0 2
-100	2	0.0	1	0 2
+9	2	0.6	0	2
+10	3	0.2	1	3
+11	3	0.0	1	3
+13	1	0.0	1	1
+14	1	0.0	1	1
+15	1	0.0	1	1
+16	1	0.0	1	1
+17	2	0.0	1	2
+19	2	0.0	1	2
+21	3	0.0	2	3
+23	1	0.0	2	1
+26	1	0.0	2	1
+28	1	0.0	2	1
+29	1	0.0	2	1
+33	1	0.0	3	1
+34	1	0.0	3	1
+36	1	0.0	3	1
+39	2	0.0	3	2
+41	1	0.0	4	1
+44	2	0.0	4	2
+45	1	0.0	4	1
+47	1	0.0	4	1
+48	1	0.0	4	1
+51	3	0.0	5	3
+52	3	0.0	5	3
+55	1	0.0	5	1
+57	1	0.0	5	1
+59	3	0.0	5	3
+61	1	0.0	6	1
+62	3	0.0	6	3
+64	2	0.0	6	2
+70	1	0.0	7	1
+71	1	0.0	7	1
+72	1	0.0	7	1
+73	4	0.0	7	4
+77	2	0.0	7	2
+78	2	0.0	7	2
+80	1	0.0	8	1
+81	1	0.0	8	1
+83	5	0.0	8	5
+84	1	0.0	8	1
+90	1	0.0	9	1
+91	2	0.0	9	2
+92	1	0.0	9	1
+95	1	0.0	9	1
+98	1	0.0	9	1
+99	2	0.0	9	2
+100	2	0.0	10	2
+
 
 RUN STATISTICS FOR INPUT FILE: UHRRep2_trimmed_2.fastq.gz
 =============================================
 162373 sequences processed in total
+Sequences removed because they became shorter than the length cutoff of 20 bp:	367 (0.2%)
+Sequences removed because they were longer than the upper length cutoff:	0 (0.0%)
+Sequences removed because of too many N bases:	0 (0.0%)
 
-Total number of sequences analysed for the sequence pair length validation: 162373
+=== Paired-end validation ===
 
-Number of sequence pairs removed because at least one read was shorter than the length cutoff (20 bp): 367 (0.23%)
+Number of sequence pairs analysed:     162,373
+
+Number of sequence pairs removed because at least one read was shorter than the length cutoff (0.23%):
+                                    367
+Number of pairs removed for N content (0.00%):
+                                      0
+
+Unpaired read 1 kept:               349
+Unpaired read 2 kept:                15
+

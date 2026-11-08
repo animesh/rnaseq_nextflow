@@ -1,4 +1,4 @@
-# [RNA-seq](https://rnabio.org) analysis with [nextflow](https://nf-co.re/rnaseq/3.16.1/)
+# [RNA-seq](https://rnabio.org) analysis with [nextflow](https://nf-co.re/rnaseq/3.16.1/) and differentialabundance analysis with [differentialabundance](https://github.com/nf-core/differentialabundance)
 
 
 ## Create directory or simply clone this [repo](https://github.com/animesh/rnaseq_nextflow)
@@ -35,17 +35,17 @@ sed "s/exon_number \"1\";$/exon_number \"1\";gene_biotype "protein_coding";/g" c
 ```
 
 ## Install [nextflow](https://www.nextflow.io/docs/latest/install.html)
-Pre-reqs: [curl](https://ec.haxx.se/install/linux.html), [Java](https://askubuntu.com/questions/1492571/install-openjdk-21) and [Docker](https://docs.docker.com/engine/install/ubuntu/) or [Singularity](https://www.youtube.com/watch?v=OB1qs56g0VA) on Linux, Windows users can run via [WSL](https://www.nextflow.io/blog/2021/setup-nextflow-on-windows.html)
+Pre-reqs: [curl](https://ec.haxx.se/install/linux.html), [Java](https://askubuntu.com/questions/1492571/install-openjdk-21) and [Apptainer](https://github.com/apptainer/apptainer/blob/main/INSTALL.md) on Linux, Windows users can run via [WSL](https://www.nextflow.io/blog/2021/setup-nextflow-on-windows.html)
 ```
 curl -s https://get.nextflow.io | bash
 ```
 ```
 
-      N E X T F L O W
-      version 24.04.4 build 5917
-      created 01-08-2024 07:05 UTC (09:05 CEST)
-      cite doi:10.1038/nbt.3820
-      http://nextflow.io
+  N E X T F L O W
+  version 24.04.4 build 5917
+  created 01-08-2024 07:05 UTC (09:05 CEST)
+  cite doi:10.1038/nbt.3820
+  http://nextflow.io
 
 
 Nextflow installation completed. Please note:
@@ -57,36 +57,36 @@ Nextflow installation completed. Please note:
 ./nextflow run hello
 ```
 ```
+ N E X T F L O W   ~  version 26.10.5
 
- N E X T F L O W   ~  version 24.04.4
-
-Launching `https://github.com/nextflow-io/hello` [trusting_cori] DSL2 - revision: afff16a9b4 [master]
+Pulling nextflow-io/hello ...
+ downloaded from https://github.com/nextflow-io/hello.git
+Launching `https://github.com/nextflow-io/hello` [spontaneous_lorenz] revision: 3c2cdc9823 [master]
 
 executor >  local (4)
-executor >  local (4)
-[4d/db3896] sayHello (1) [100%] 4 of 4 ✔
+[f5/b7b56b] sayHello (3) [100%] 4 of 4 ✔
 Ciao world!
 
 Hello world!
 
-Hola world!
-
 Bonjour world!
+
+Hola world!
 ```
 
 ## can finally test nextflow-rnaseq-pipeline 
 ```
-./nextflow run nf-core/rnaseq -profile docker,test --outdir test
+./nextflow run nf-core/rnaseq -profile singularity,test --outdir test
 ```
 
 ## if it goes well, run it over the downloaded data above using the created [sample-sheet](./samples.csv), [reference genome](./chr22_with_ERCC92.fa) and the [corresponding annotation](./chr22_with_ERCC92.biotype.gtf)
 ```
-./nextflow run nf-core/rnaseq --max_memory '16.GB' --max_cpus 6  --input samples.csv --outdir results --gtf chr22_with_ERCC92.biotype.gtf --fasta chr22_with_ERCC92.fa -profile docker 
+ ./nextflow run nf-core/rnaseq --input samples.csv --outdir results --gtf chr22_with_ERCC92.biotype.gtf --fasta chr22_with_ERCC92.fa -profile singularity --max_memory '24.GB' --max_cpus 6 -c <(echo "process { withName: '.*:PREPARE_GENOME_REFERENCES:MAKE_TRANSCRIPTS_FASTA|.*:PREPARE_GENOME_INDICES:STAR_GENOMEGENERATE|.*:ALIGN_STAR:STAR_ALIGN' { memory = 16.GB } }") -resume
 ```
 
 ## AND in case above fails, check the *.nextflow* logs, lets say [cosmic rays flipped the bits](https://radiolab.org/podcast/bit-flip), one can try to [resume](https://www.nextflow.io/blog/2019/demystifying-nextflow-resume.html) from last successfull step/checkpoint just with a -resume switch!
 ```
-./nextflow run nf-core/rnaseq --max_memory '16.GB' --max_cpus 6  --input samples.csv --outdir results --gtf chr22_with_ERCC92.biotype.gtf --fasta chr22_with_ERCC92.fa -profile docker -resume
+./nextflow run nf-core/rnaseq --max_memory '16.GB' --max_cpus 6  --input samples.csv --outdir results --gtf chr22_with_ERCC92.biotype.gtf --fasta chr22_with_ERCC92.fa -profile singularity -resume
 ```
 but if nothing seems to be working, try https://github.com/nf-core/rnaseq/issues 🤞
 
@@ -105,6 +105,54 @@ compare [original](http://genomedata.org/rnaseq-tutorial/results/cshl2022/rnaseq
 wget http://genomedata.org/rnaseq-tutorial/results/cshl2022/rnaseq/gene_read_counts_table_all_final.tsv	
 ```
 with resulting [nextflow-gene-counts](./results/star_salmon/salmon.merged.gene_counts.tsv), spearman rank-correlation is ~ 0.99 calculated using [Perseus](https://www.nature.com/articles/nmeth.3901) shown in blue in [scatter-plot](./Screenshot%202024-10-17%20170444.png) and Euclidean distance [clusters](./Screenshot%202024-10-17%20165609.png)) accordingly, [more](./session1.sps) on this in blog/[post](https://open.substack.com/pub/fuzzylife/p/rna-seq-analysis-with-nextflow?r=a55q5&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true) https://fuzzylife.substack.com/p/rna-seq-analysis-with-nextflow
+
+## differentialabudance
+
+### Create [sample-sheet](https://nf-co.re/rnaseq/usage#samplesheet-input) from the downloaded Data 
+
+```
+echo "sample,condition" > samples_differentialabundance.csv
+ls -1 *1.fastq.gz | awk -F "_" '{print $1 $2}' > s0
+ls -1 *1.fastq.gz | awk -F "_" '{print $1}' > s1
+paste -d "," s? >> samples_differentialabundance.csv
+cat samples_differentialabundance.csv
+```
+
+### Create [constrasts](https://nf-co.re/rnaseq/
+```
+echo "id,variable,reference,target,blocking" >  contrasts.csv
+echo "sample_condition,condition" > l0
+uniq s1 | tr '\n' ',' > l1
+paste -d "," l? >>  contrasts.csv
+cat  contrasts.csv
+```
+
+run the pipeline
+
+```
+./nextflow run nf-core/differentialabundance -profile rnaseq,singularity --input samples_differentialabundance.csv --matrix results/star_salmon/salmon.merged.gene_counts_length_scaled.tsv --contrasts contrasts.csv -c <(echo "params.seed = 42; params.deseq2_vst_nsub = 1") --outdir results_differentialabundance/
+```
+
+### compare https://rnabio.org/module-03-expression/0003/03/03/Differential_Expression-DESeq2/
+
+```
+Rscript DE_sig_genes_DESeq2.R 
+python compare_deseq2.py 
+```
+
+### check results via app
+
+```
+Rscript -e 'if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes", repos="https://cloud.r-project.org"); remotes::install_github("pinin4fjords/shinyngs", upgrade = "never")'
+cd results_differentialabundance/shinyngs_app/rnaseq/study/
+sed -i 's/prepareApp/prepare_app/g' app.R
+Rscript app.R
+...
+Loading required package: shiny
+
+Listening on http://127.0.0.1:6731
+```
+
 
 #### For mapping to the latest whole Human-genome assembly, need to download and run nextflow the appropriate Reference Genome and its corresponding Annotation, for example
 ```

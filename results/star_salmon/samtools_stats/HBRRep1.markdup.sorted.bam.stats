@@ -1,14 +1,14 @@
-# This file was produced by samtools stats (1.20+htslib-1.20) and can be plotted using plot-bamstats
+# This file was produced by samtools stats (1.24+htslib-1.24) and can be plotted using plot-bamstats
 # This file contains statistics for all reads.
 # The command line was:  stats --threads 1 --reference chr22_with_ERCC92.fa HBRRep1.markdup.sorted.bam
 # CHK, Checksum	[2]Read Names	[3]Sequences	[4]Qualities
 # CHK, CRC32 of reads which passed filtering followed by addition (32bit overflow)
-CHK	5019964c	db5e5161	6bc9f28b
+CHK	5019964c	db5e5161	edab319d
 # Summary Numbers. Use `grep ^SN | cut -f 2-` to extract this part.
 SN	raw total sequences:	236222	# excluding supplementary and secondary reads
 SN	filtered sequences:	0
 SN	sequences:	236222
-SN	is sorted:	1
+SN	is sorted:	1	# sorted by coordinate
 SN	1st fragments:	118111
 SN	last fragments:	118111
 SN	reads mapped:	236222
@@ -39,8 +39,8 @@ SN	maximum last fragment length:	100
 SN	average quality:	36.7
 SN	insert size average:	537.4
 SN	insert size standard deviation:	1366.9
-SN	inward oriented pairs:	117699
-SN	outward oriented pairs:	412
+SN	inward oriented pairs:	118111
+SN	outward oriented pairs:	0
 SN	pairs with other orientation:	0
 SN	pairs on different chromosomes:	0
 SN	percentage of properly paired reads (%):	100.0
@@ -1042,13 +1042,13 @@ IS	91	0	0	0	0
 IS	92	0	0	0	0
 IS	93	0	0	0	0
 IS	94	0	0	0	0
-IS	95	1	0	1	0
-IS	96	4	0	4	0
-IS	97	26	6	20	0
-IS	98	142	33	109	0
-IS	99	162	40	122	0
-IS	100	316	189	127	0
-IS	101	319	318	1	0
+IS	95	1	1	0	0
+IS	96	4	4	0	0
+IS	97	26	26	0	0
+IS	98	142	142	0	0
+IS	99	162	162	0	0
+IS	100	316	316	0	0
+IS	101	319	319	0	0
 IS	102	361	361	0	0
 IS	103	365	365	0	0
 IS	104	390	390	0	0
@@ -1266,7 +1266,7 @@ IS	315	75	75	0	0
 IS	316	60	60	0	0
 IS	317	66	66	0	0
 IS	318	54	54	0	0
-IS	319	62	61	1	0
+IS	319	62	62	0	0
 IS	320	65	65	0	0
 IS	321	60	60	0	0
 IS	322	73	73	0	0
@@ -1454,7 +1454,7 @@ IS	503	4	4	0	0
 IS	504	5	5	0	0
 IS	505	3	3	0	0
 IS	506	5	5	0	0
-IS	507	7	6	1	0
+IS	507	7	7	0	0
 IS	508	7	7	0	0
 IS	509	1	1	0	0
 IS	510	4	4	0	0
@@ -1527,7 +1527,7 @@ IS	576	5	5	0	0
 IS	577	4	4	0	0
 IS	578	8	8	0	0
 IS	579	4	4	0	0
-IS	580	8	7	1	0
+IS	580	8	8	0	0
 IS	581	3	3	0	0
 IS	582	5	5	0	0
 IS	583	8	8	0	0
@@ -1535,7 +1535,7 @@ IS	584	5	5	0	0
 IS	585	9	9	0	0
 IS	586	7	7	0	0
 IS	587	2	2	0	0
-IS	588	3	2	1	0
+IS	588	3	3	0	0
 IS	589	6	6	0	0
 IS	590	4	4	0	0
 IS	591	7	7	0	0
@@ -1556,8 +1556,8 @@ IS	605	2	2	0	0
 IS	606	8	8	0	0
 IS	607	7	7	0	0
 IS	608	8	8	0	0
-IS	609	7	6	1	0
-IS	610	5	4	1	0
+IS	609	7	7	0	0
+IS	610	5	5	0	0
 IS	611	7	7	0	0
 IS	612	3	3	0	0
 IS	613	3	3	0	0
@@ -1643,13 +1643,13 @@ IS	692	5	5	0	0
 IS	693	9	9	0	0
 IS	694	2	2	0	0
 IS	695	7	7	0	0
-IS	696	4	3	1	0
+IS	696	4	4	0	0
 IS	697	6	6	0	0
 IS	698	7	7	0	0
-IS	699	8	7	1	0
+IS	699	8	8	0	0
 IS	700	9	9	0	0
 IS	701	7	7	0	0
-IS	702	9	8	1	0
+IS	702	9	9	0	0
 IS	703	7	7	0	0
 IS	704	5	5	0	0
 IS	705	6	6	0	0
@@ -1950,7 +1950,7 @@ IS	999	1	1	0	0
 IS	1000	7	7	0	0
 IS	1001	9	9	0	0
 IS	1002	5	5	0	0
-IS	1003	6	5	1	0
+IS	1003	6	6	0	0
 IS	1004	2	2	0	0
 IS	1005	2	2	0	0
 IS	1006	5	5	0	0
@@ -1985,7 +1985,7 @@ IS	1034	1	1	0	0
 IS	1035	6	6	0	0
 IS	1036	6	6	0	0
 IS	1037	4	4	0	0
-IS	1038	7	6	1	0
+IS	1038	7	7	0	0
 IS	1039	4	4	0	0
 IS	1040	4	4	0	0
 IS	1041	1	1	0	0
@@ -2100,7 +2100,7 @@ IS	1149	3	3	0	0
 IS	1150	4	4	0	0
 IS	1151	1	1	0	0
 IS	1152	8	8	0	0
-IS	1153	4	3	1	0
+IS	1153	4	4	0	0
 IS	1154	3	3	0	0
 IS	1155	3	3	0	0
 IS	1156	5	5	0	0
@@ -2139,7 +2139,7 @@ IS	1188	0	0	0	0
 IS	1189	2	2	0	0
 IS	1190	1	1	0	0
 IS	1191	2	2	0	0
-IS	1192	3	2	1	0
+IS	1192	3	3	0	0
 IS	1193	2	2	0	0
 IS	1194	3	3	0	0
 IS	1195	2	2	0	0
@@ -2341,7 +2341,7 @@ IS	1390	3	3	0	0
 IS	1391	6	6	0	0
 IS	1392	3	3	0	0
 IS	1393	4	4	0	0
-IS	1394	2	1	1	0
+IS	1394	2	2	0	0
 IS	1395	2	2	0	0
 IS	1396	3	3	0	0
 IS	1397	3	3	0	0
@@ -2392,7 +2392,7 @@ IS	1441	1	1	0	0
 IS	1442	6	6	0	0
 IS	1443	1	1	0	0
 IS	1444	4	4	0	0
-IS	1445	5	4	1	0
+IS	1445	5	5	0	0
 IS	1446	2	2	0	0
 IS	1447	2	2	0	0
 IS	1448	4	4	0	0
@@ -2627,12 +2627,12 @@ IS	1676	3	3	0	0
 IS	1677	3	3	0	0
 IS	1678	2	2	0	0
 IS	1679	5	5	0	0
-IS	1680	1	0	1	0
+IS	1680	1	1	0	0
 IS	1681	1	1	0	0
 IS	1682	1	1	0	0
 IS	1683	0	0	0	0
 IS	1684	5	5	0	0
-IS	1685	3	2	1	0
+IS	1685	3	3	0	0
 IS	1686	6	6	0	0
 IS	1687	3	3	0	0
 IS	1688	4	4	0	0
@@ -3513,7 +3513,7 @@ IS	2562	1	1	0	0
 IS	2563	0	0	0	0
 IS	2564	0	0	0	0
 IS	2565	2	2	0	0
-IS	2566	1	0	1	0
+IS	2566	1	1	0	0
 IS	2567	3	3	0	0
 IS	2568	0	0	0	0
 IS	2569	1	1	0	0
@@ -3721,7 +3721,7 @@ IS	2770	0	0	0	0
 IS	2771	0	0	0	0
 IS	2772	3	3	0	0
 IS	2773	1	1	0	0
-IS	2774	1	0	1	0
+IS	2774	1	1	0	0
 IS	2775	1	1	0	0
 IS	2776	0	0	0	0
 IS	2777	1	1	0	0
@@ -3776,7 +3776,7 @@ IS	2825	0	0	0	0
 IS	2826	0	0	0	0
 IS	2827	1	1	0	0
 IS	2828	1	1	0	0
-IS	2829	2	1	1	0
+IS	2829	2	2	0	0
 IS	2830	0	0	0	0
 IS	2831	1	1	0	0
 IS	2832	0	0	0	0
@@ -3947,7 +3947,7 @@ IS	2996	3	3	0	0
 IS	2997	0	0	0	0
 IS	2998	2	2	0	0
 IS	2999	3	3	0	0
-IS	3000	3	2	1	0
+IS	3000	3	3	0	0
 IS	3001	3	3	0	0
 IS	3002	1	1	0	0
 IS	3003	1	1	0	0
@@ -3978,7 +3978,7 @@ IS	3027	3	3	0	0
 IS	3028	0	0	0	0
 IS	3029	1	1	0	0
 IS	3030	1	1	0	0
-IS	3031	4	3	1	0
+IS	3031	4	4	0	0
 IS	3032	0	0	0	0
 IS	3033	7	7	0	0
 IS	3034	0	0	0	0
@@ -4023,7 +4023,7 @@ IS	3072	2	2	0	0
 IS	3073	2	2	0	0
 IS	3074	1	1	0	0
 IS	3075	1	1	0	0
-IS	3076	2	1	1	0
+IS	3076	2	2	0	0
 IS	3077	1	1	0	0
 IS	3078	3	3	0	0
 IS	3079	1	1	0	0
@@ -5273,7 +5273,7 @@ IS	4322	0	0	0	0
 IS	4323	2	2	0	0
 IS	4324	2	2	0	0
 IS	4325	1	1	0	0
-IS	4326	2	1	1	0
+IS	4326	2	2	0	0
 IS	4327	2	2	0	0
 IS	4328	1	1	0	0
 IS	4329	2	2	0	0
@@ -5411,7 +5411,7 @@ IS	4460	2	2	0	0
 IS	4461	0	0	0	0
 IS	4462	1	1	0	0
 IS	4463	1	1	0	0
-IS	4464	2	1	1	0
+IS	4464	2	2	0	0
 IS	4465	0	0	0	0
 IS	4466	1	1	0	0
 IS	4467	0	0	0	0
@@ -5463,7 +5463,7 @@ IS	4512	1	1	0	0
 IS	4513	1	1	0	0
 IS	4514	0	0	0	0
 IS	4515	1	1	0	0
-IS	4516	3	2	1	0
+IS	4516	3	3	0	0
 IS	4517	1	1	0	0
 IS	4518	0	0	0	0
 IS	4519	2	2	0	0
@@ -8947,7 +8947,7 @@ IS	7996	0	0	0	0
 IS	7997	0	0	0	0
 IS	7998	0	0	0	0
 IS	7999	0	0	0	0
-IS	8000	2313	2311	2	0
+IS	8000	2313	2313	0	0
 # Read lengths. Use `grep ^RL | cut -f 2-` to extract this part. The columns are: read length, count
 RL	20	6
 RL	21	8
